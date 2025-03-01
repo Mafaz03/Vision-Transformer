@@ -1,6 +1,8 @@
 import torch
 from torch import nn
 import numpy as np
+from typing import Dict, List, Optional, Union, Tuple, Iterable
+
 class SigLipVisionConfig:
     def __init__(
             self,
@@ -93,7 +95,7 @@ class SiglipAttention(nn.Module):
         self.out_proj = nn.Linear(in_features = self.embed_dim, out_features = self.embed_dim)
 
 
-    def forward(self, hidden_states: torch.Tensor) -> tuple[torch. Tensor, torch. Tensor]:
+    def forward(self, hidden_states: torch.Tensor) -> Tuple[torch. Tensor, torch. Tensor]:
         # [Batch_Size, Num_Patches, Embed_Dim]
         batch_size, seq_len, embed_dim = hidden_states.size() # seq_len is same as Num_Patches
 
@@ -181,7 +183,7 @@ class SigLipVisionModel(nn.Module):
         self.vision_model = SiglipVisionTransformer(config)
         self.config = config
     
-    def forward(self, pixel_values: np.ndarray) -> tuple: 
+    def forward(self, pixel_values: np.ndarray) -> Tuple: 
         # pixel_values: [Batch_Size, Channels, Height, Width] -> [Batch_Size, Num_Patches, Embed_Dim]
         return self.vision_model(pixel_values = pixel_values)
     
