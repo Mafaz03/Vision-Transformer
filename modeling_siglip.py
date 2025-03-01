@@ -3,7 +3,7 @@ from torch import nn
 import numpy as np
 from typing import Dict, List, Optional, Union, Tuple, Iterable
 
-class SigLipVisionConfig:
+class SiglipVisionConfig:
     def __init__(
             self,
             hidden_size = 768,
@@ -32,7 +32,7 @@ class SigLipVisionConfig:
             self.num_image_tokens = num_image_tokens
 
 class SiglipVisionEmbeddings(nn.Module):
-    def __init__(self, config: SigLipVisionConfig):
+    def __init__(self, config: SiglipVisionConfig):
         super().__init__()
         self.config = config
         self.embed_dim = config.hidden_size
@@ -79,7 +79,7 @@ class SiglipMLP(nn.Module):
         return hidden_states
 
 class SiglipAttention(nn.Module):
-    def __init__(self, config: SigLipVisionConfig):
+    def __init__(self, config: SiglipVisionConfig):
         super().__init__()
         self.config = config
         self.embed_dim = config.hidden_size
@@ -129,7 +129,7 @@ class SiglipAttention(nn.Module):
 
 
 class SiglipEncoderLayer(nn.Module):
-    def __init__(self, config: SigLipVisionConfig):
+    def __init__(self, config: SiglipVisionConfig):
         super().__init__()
         self.embed_dim = config.hidden_size
         self.self_attn = SiglipAttention(config)
@@ -149,7 +149,7 @@ class SiglipEncoderLayer(nn.Module):
         return hidden_states
 
 class SiglipEncoder(nn.Module):
-    def __init__(self, config: SigLipVisionConfig):
+    def __init__(self, config: SiglipVisionConfig):
         super().__init__()
         self.config = config
         self.layers = nn.ModuleList(
@@ -162,7 +162,7 @@ class SiglipEncoder(nn.Module):
         return hidden_states
 
 class SiglipVisionTransformer(nn.Module):    
-    def __init__(self, config: SigLipVisionConfig):
+    def __init__(self, config: SiglipVisionConfig):
         super().__init__()
         self.config = config
         embed_dim = config.hidden_size
@@ -177,8 +177,8 @@ class SiglipVisionTransformer(nn.Module):
         last_hidden_state = self.post_layernorm(last_hidden_state)
         return last_hidden_state
 
-class SigLipVisionModel(nn.Module):    
-    def __init__(self, config: SigLipVisionConfig):
+class SiglipVisionModel(nn.Module):    
+    def __init__(self, config: SiglipVisionConfig):
         super().__init__()
         self.vision_model = SiglipVisionTransformer(config)
         self.config = config
@@ -188,9 +188,9 @@ class SigLipVisionModel(nn.Module):
         return self.vision_model(pixel_values = pixel_values)
     
 if __name__ == "__main__":
-    config = SigLipVisionConfig()
+    config = SiglipVisionConfig()
     config.num_image_tokens = 1024
-    model = SigLipVisionModel(config)
+    model = SiglipVisionModel(config)
     output = model(torch.randn(1, 3, 224, 224))
     print(output.shape)
     parameters = sum(p.numel() for p in model.parameters())
