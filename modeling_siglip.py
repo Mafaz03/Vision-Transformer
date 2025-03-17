@@ -16,7 +16,7 @@ class SiglipVisionConfig:
             layer_norm_eps=1e-6,
             attention_dropout=0.0, # not using it right now
             num_image_tokens: int = None,
-            *kwargs
+            **kwargs
             ):
 
             super().__init__()      
@@ -68,8 +68,8 @@ class SiglipMLP(nn.Module):
     def __init__(self, config) :
         super().__init__()
         self.config = config
-        self.fc1 = nn.Linear (config.hidden_size, config. intermediate_size)
-        self.fc2 = nn.Linear (config. intermediate_size, config.hidden_size)
+        self.fc1 = nn.Linear(config.hidden_size, config.intermediate_size)
+        self.fc2 = nn.Linear(config. intermediate_size, config.hidden_size)
     def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
         # [Batch_Size, Num_Patches, Embed_Dim] -> [Batch_Size, Num_Patches, Intermediate_Size]
         hidden_states = self.fc1(hidden_states) 
